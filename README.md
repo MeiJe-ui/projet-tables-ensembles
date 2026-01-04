@@ -1,4 +1,4 @@
-# Projet Listes – Java
+# Projet Tables et ensembles – Java
 
 ## Présentation
 Ce projet est une adaptation personnelle d’un TP universitaire réalisé en Java dans le cadre du cours de Programmation Avancée (Licence 3 – ISTIC, Université Rennes 1).
