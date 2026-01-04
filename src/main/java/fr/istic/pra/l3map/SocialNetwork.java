@@ -1,10 +1,12 @@
 package fr.istic.pra.l3map;
 
 
-import fr.istic.pra.map.util.L3HashMap; // a commenter en partie 3.2
-// import fr.istic.pra.l3map.util.L3HashMap; // a décommenter en partie 3.2
-import fr.istic.pra.map.util.L3HashSet; // a commenter en partie 3.2
-// import fr.istic.pra.l3map.util.L3HashSet; // a décommenter en partie 3.2
+import java.util.HashSet;
+
+//import fr.istic.pra.map.util.L3HashMap; // a commenter en partie 3.2
+import fr.istic.pra.l3map.util.L3HashMap; // a décommenter en partie 3.2
+//import fr.istic.pra.map.util.L3HashSet; // a commenter en partie 3.2
+import fr.istic.pra.l3map.util.L3HashSet; // a décommenter en partie 3.2
 
 public class SocialNetwork extends L3HashMap <String, L3HashSet<String>> {
 	// constructeur
@@ -108,8 +110,15 @@ public class SocialNetwork extends L3HashMap <String, L3HashSet<String>> {
 	* (y, x) tels que (x, y) appartient à this.
 	*/
 	public SocialNetwork symmetricRelation() {
-		// TODO : compléter la méthode symmetricRelation()
-		return null;
+		SocialNetwork symetric = new SocialNetwork();
+		L3HashMapKeyIterator it = super.keyIterator();
+		while(it.hasNext()){
+			String y = it.next(); 
+			for (String r : this.getValue(y)) {
+				symetric.addRelation(r, y);
+			}
+		}
+		return symetric;
 	}
 
 	/**
@@ -117,37 +126,88 @@ public class SocialNetwork extends L3HashMap <String, L3HashSet<String>> {
 	* toute entrée x de this, (x, x) appartient à this), false sinon
 	*/
 	public boolean isReflexive() {
-		// TODO : compléter la méthode isReflexive()
-		return false;
+		L3HashMapKeyIterator it = super.keyIterator();
+		while(it.hasNext()){
+			String y = it.next();
+			if(!this.isDefined(y, y)){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
 	* @return true si this est inclus dans net, false sinon
 	*/
 	public boolean isIncludedIn(SocialNetwork net) {
-		// TODO : compléter la méthode isIncludedIn(net)
-		return false;
+		if(this.equals(net)) return true;
+		L3HashMapKeyIterator it = super.keyIterator();
+		while(it.hasNext()){
+
+			String y = it.next();
+
+			if(!net.containsKey(y)){
+				return false;
+
+			} else {
+
+				for (String r : this.getValue(y)) {
+					if(!net.isDefined(y, r)){
+						return false; 
+					}
+					
+				}
+			}
+		}
+		return true;
 	}
 
 	/**
 	* @return intersection de this et net
 	*/
 	public SocialNetwork intersection(SocialNetwork net) {
-		// TODO : compléter la méthode intersection(net)
-		return null;
+		SocialNetwork intersection = new SocialNetwork();
+		L3HashMapKeyIterator it = super.keyIterator();
+		while(it.hasNext()){
+			String y = it.next();
+			for (String r : this.getValue(y)){
+				if(net.isDefined(y, r)){
+					intersection.addRelation(y, r);
+				}
+			}
+		}
+		return intersection;
 	}
 
 	/**
 	* this devient l’intersection de this et net.
 	*/
 	public void intersectionBis(SocialNetwork net) {
-		// TODO : compléter la méthode intersectionBis(net)
+		SocialNetwork clone = this.intersection(net);
+		this.clear();
+		L3HashMapKeyIterator it = clone.keyIterator();
+		if(!clone.isEmpty()){
+			while (it.hasNext()){
+				String y = it.next();
+				for (String r : clone.getValue(y)){
+					this.addRelation(y,r);
+				}
+			}
+		}
 	}
 
 	/**
 	* this devient l’union de this et net.
 	*/
 	public void union(SocialNetwork net) {
-		// TODO : compléter la méthode union(net)
+		L3HashMapKeyIterator it = net.keyIterator();
+		while(it.hasNext()){
+			String y = it.next();
+			for(String r : net.getValue(y)){
+				if(!this.isDefined(y, r)){
+					this.addRelation(y,r);
+				}
+			}
+		}
 	}
 }

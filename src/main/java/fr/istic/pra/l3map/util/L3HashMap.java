@@ -33,28 +33,57 @@ public class L3HashMap<K, V> extends L3HashSet<L3MapEntry<K, V>> implements L3Ma
 
     @Override
     public boolean containsKey(K key) {
-        // TODO : compléter la méthode containsKey(key)
+        for (L3MapEntry<K, V> entry : this) {
+            if (entry.getKey().equals(key)) {
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public void addValue(K key, V value) {
-        // TODO : compléter la méthode addValue(key, value)
+        for (L3MapEntry<K, V> entry : this) {
+            if (entry.getKey().equals(key)) {
+                entry.setValue(value);
+                return;
+            }
+        }
+        this.add(new L3MapEntry<>(key, value));
     }
 
     @Override
     public void modifyValue(K key, V newValue) {
-        // TODO : compléter la méthode modifyValue(key, value)
+        for (L3MapEntry<K, V> entry : this) {
+            if (entry.getKey().equals(key)) {
+                entry.setValue(newValue);
+                return;
+            }
+        }
     }
 
     @Override
     public void removeValue(K key, V value) {
-        // TODO : compléter la méthode removeValue(key, value)
+        L3MapEntry<K, V> toRemove = null;
+        for (L3MapEntry<K, V> entry : this) {
+            if (entry.getKey().equals(key) && entry.getValue().equals(value)) {
+                toRemove = entry;
+                break;
+            }
+        }
+
+        if (toRemove != null) {
+            this.remove(toRemove);
+        }
     }
 
     @Override
     public V getValue(K key) {
-        // TODO : compléter la méthode getValue(key)
+        for (L3MapEntry<K, V> entry : this) {
+            if (entry.getKey().equals(key)) {
+                return entry.getValue();
+            }
+        }
         return null;
     }
 
